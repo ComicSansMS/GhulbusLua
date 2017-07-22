@@ -73,9 +73,22 @@ set(LUA_LIBRARY_SOURCE_FILES
 )
 
 add_library(liblua STATIC ${LUA_HEADER_FILES} ${LUA_CORE_SOURCE_FILES} ${LUA_LIBRARY_SOURCE_FILES})
-target_include_directories(liblua PUBLIC ${LUA_SOURCE_DIR})
+target_include_directories(liblua PUBLIC $<BUILD_INTERFACE:${LUA_SOURCE_DIR}>)
 
 add_executable(lua ${LUA_SOURCE_DIR}/lua.c)
 target_link_libraries(lua PRIVATE liblua)
 add_executable(luac ${LUA_SOURCE_DIR}/luac.c)
 target_link_libraries(luac PRIVATE liblua)
+
+install(TARGETS liblua lua luac EXPORT lua_targets
+    RUNTIME DESTINATION bin/$<CONFIG>
+    LIBRARY DESTINATION lib/$<CONFIG>
+    ARCHIVE DESTINATION lib/$<CONFIG>
+    INCLUDES DESTINATION include
+)
+install(FILES ${LUA_HEADER_FILES} DESTINATION external/lua)
+export(TARGETS liblua lua luac FILE ${PROJECT_BINARY_DIR}/cmake/lua_targets.cmake)
+install(EXPORT lua_targets
+    FILE lua_targets.cmake
+    DESTINATION cmake
+)

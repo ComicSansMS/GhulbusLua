@@ -57,12 +57,15 @@ set(GB_LUA_INCLUDE_DIR ${PROJECT_SOURCE_DIR}/include)
 set(GB_LUA_TEST_DIR ${PROJECT_SOURCE_DIR}/test)
 
 set(GB_LUA_SOURCE_FILES
+    ${GB_LUA_SOURCE_DIR}/Lua.cpp
 )
 
 set(GB_LUA_HEADER_FILES
+    ${GB_LUA_INCLUDE_DIR}/gbLua/Lua.hpp
 )
 
 set(GB_LUA_TEST_SOURCES
+    ${GB_LUA_TEST_DIR}/TestLua.cpp
 )
 
 add_library(gbLua
@@ -73,6 +76,7 @@ target_include_directories(gbLua PUBLIC $<BUILD_INTERFACE:${GB_LUA_INCLUDE_DIR}>
 target_include_directories(gbLua PUBLIC $<BUILD_INTERFACE:${Boost_INCLUDE_DIR}>)
 target_compile_definitions(gbLua PUBLIC BOOST_ALL_NO_LIB)
 target_link_libraries(gbLua PUBLIC Ghulbus::gbBase)
+target_link_libraries(gbLua PRIVATE liblua)
 
 if(NOT GB_GENERATE_COVERAGE_INFO)
     target_compile_definitions(gbLua PRIVATE $<$<CONFIG:Debug>:GHULBUS_CONFIG_ASSERT_LEVEL_DEBUG>)
