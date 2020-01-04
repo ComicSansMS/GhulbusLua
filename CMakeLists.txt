@@ -36,9 +36,6 @@ set(GB_LUA_VERSION "${GB_LUA_VERSION_MAJOR}.${GB_LUA_VERSION_MINOR}.${GB_LUA_VER
 
 option(BUILD_SHARED_LIBS "If checked, generate dynamic instead of static libraries." OFF)
 
-set(Boost_USE_STATIC_LIBS ON)
-find_package(Boost REQUIRED)
-
 set(THREADS_PREFER_PTHREAD_FLAG ON)
 find_package(Threads REQUIRED)
 
@@ -73,8 +70,6 @@ add_library(gbLua
     ${GB_LUA_HEADER_FILES}
 )
 target_include_directories(gbLua PUBLIC $<BUILD_INTERFACE:${GB_LUA_INCLUDE_DIR}>)
-target_include_directories(gbLua PUBLIC $<BUILD_INTERFACE:${Boost_INCLUDE_DIR}>)
-target_compile_definitions(gbLua PUBLIC BOOST_ALL_NO_LIB)
 target_link_libraries(gbLua PUBLIC Ghulbus::gbBase)
 target_link_libraries(gbLua PRIVATE liblua)
 
